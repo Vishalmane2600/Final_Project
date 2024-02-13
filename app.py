@@ -32,10 +32,7 @@ from pymongo import MongoClient
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 # Databade COnnection
-MONGO_URI = "mongodb+srv://vishal:pass123@cluster0.wai525o.mongodb.net/?retryWrites=true&w=majority"
-client = MongoClient(MONGO_URI)
-db = client.get_database('youtube')
-User = db.users
+
 
 # Model saved with Keras model.save()
 MODEL_PATH = 'model2.h5'
