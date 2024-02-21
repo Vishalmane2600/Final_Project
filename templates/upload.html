@@ -60,7 +60,7 @@
                     </tr>
                     <tr>
                         <th >
-                            <h4 style="color: black; font-weight: 700;"><a href="{{url_for('output')}}" id="Readmore" onclick=sendData()>Learn more...</a> </h4> 
+                            <h4 style="color: black; font-weight: 700;"><a href="{{ url_for('output', classpred=predictions.class1) }}" id="Readmore" >Learn more...</a> </h4> 
                       </th>
                     </tr>
                 </table>
@@ -68,11 +68,7 @@
         </div>
     </div>
     <script>
-        const value = document.querySelector('#classpred').textContent  ;
-            function sendData() {
-            sessionStorage.setItem(1,value);
-            // window.location.href = 'output.html';
-        }
+       
     </script>
 </body>
 

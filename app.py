@@ -32,7 +32,10 @@ from pymongo import MongoClient
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 # Databade COnnection
-
+MONGO_URI = "mongodb+srv://vishal:pass123@cluster0.wai525o.mongodb.net/?retryWrites=true&w=majority"
+client = MongoClient(MONGO_URI)
+db = client.get_database('youtube')
+User = db.users
 
 # Model saved with Keras model.save()
 MODEL_PATH = 'model2.h5'
@@ -77,12 +80,14 @@ def model_predict(img_path, model):
 @app.route('/', methods=['GET'])
 def html():
     # Main page
+    if 'user_id' in session:
+        return redirect(url_for('home')) 
     return render_template('html.html')
 
-@app.route('/index2', methods=['GET'])
+@app.route('/index2', methods=['GET','POST'])
 def index2():
     if 'user_id' not in session:
-        return render_template('html.html')
+        return redirect(url_for('/'))
     # Main page
     return render_template('index2.html')
 
@@ -188,8 +193,10 @@ def register():
     # Insert the new user into the database
     user_data = {'username': username, 'password': password,'email': email}
     User.insert_one(user_data)
+    user=User.find_one({'email': email})
+    session['user_id'] = str(user['_id'])
     error="Registration successful! You can now login."
-    return render_template('/home.html',error=error)
+    return redirect('/home')
 
 
 @app.route('/home', methods=['GET','POST'])
@@ -206,7 +213,8 @@ def logout():
 
 @app.route('/output', methods=['GET','POSt'])
 def output():
-    return render_template('output.html')
+    classpred = request.args.get('classpred')
+    return render_template('output.html', classpred=classpred)
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run(debug = False,host='0.0.0.0')
