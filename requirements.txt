@@ -4,5 +4,7 @@ Werkzeug == 3.0.1
 numpy
 pymongo 
 keras == 2.15.0    
-tensorboard == 2.15.1  
+tensorboard
+wheel == 0.38.4  
 gevent == 23.9.1              
+watchdog == 4.0.0
