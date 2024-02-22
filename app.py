@@ -3,7 +3,7 @@ from __future__ import division, print_function
 from flask import Flask , render_template  , request , send_file ,flash,session
 
 import os
-
+from PIL import Image
 
 import numpy as np
 
