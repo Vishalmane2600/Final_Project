@@ -8,4 +8,6 @@ tensorflow == 2.15.0
 wheel == 0.38.4  
 gevent == 23.9.1              
 watchdog == 4.0.0
-tensorboard == 2.15.1                   
+tensorboard == 2.15.1   
+uuid
+urllib                

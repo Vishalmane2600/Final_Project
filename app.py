@@ -1,10 +1,10 @@
 from __future__ import division, print_function
 # coding=utf-8
 from flask import Flask , render_template  , request , send_file ,flash,session
-import sys
+
 import os
-import glob
-import re
+
+
 import numpy as np
 
 # Keras
@@ -16,14 +16,10 @@ from keras.preprocessing import image
 
 # Flask utils
 from flask import Flask, redirect, url_for, request, render_template
-from werkzeug.utils import secure_filename
-from gevent.pywsgi import WSGIServer
-
 import os
 import uuid
 import flask
 import urllib
-from PIL import Image
 from tensorflow.keras.models import load_model
 
 from tensorflow.keras.preprocessing.image import load_img , img_to_array
