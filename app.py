@@ -8,21 +8,18 @@ import os
 import numpy as np
 
 # Keras
-from keras.applications.imagenet_utils import preprocess_input, decode_predictions
+
 from keras.models import load_model
 from keras.preprocessing import image
-from keras.applications.vgg16 import VGG16, preprocess_input, decode_predictions
-from keras.preprocessing import image
-
 # Flask utils
 from flask import Flask, redirect, url_for, request, render_template
 import os
 import uuid
 import flask
 import urllib
-from tensorflow.keras.models import load_model
+from keras.models import load_model
 
-from tensorflow.keras.preprocessing.image import load_img , img_to_array
+from keras.preprocessing.image import load_img , img_to_array
 from pymongo import MongoClient
 # Define a flask app
 app = Flask(__name__)
@@ -212,5 +209,5 @@ def output():
     classpred = request.args.get('classpred')
     return render_template('output.html', classpred=classpred)
 
-# if __name__ == "__main__":
-#     app.run(debug = False,host='0.0.0.0')
+if __name__ == "__main__":
+    app.run(debug = False,host='0.0.0.0')
