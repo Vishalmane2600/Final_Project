@@ -1,3 +1,4 @@
-from app import app
+from app import app  # Assuming your Flask app object is named 'app'
+
 if __name__ == "__main__":
-    app.run(debug = True,host='0.0.0.0')
+    app.run()

@@ -21,6 +21,7 @@ from keras.models import load_model
 
 from keras.preprocessing.image import load_img , img_to_array
 from pymongo import MongoClient
+import awsgi
 # Define a flask app
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -39,7 +40,6 @@ model = load_model(MODEL_PATH)
 print('Model loaded. Start serving...')
 
 
-print('Model loaded. Check http://127.0.0.1:5000/')
 ALLOWED_EXT = set(['jpg'])
 def allowed_file(filename):
     return '.' in filename and \
@@ -209,3 +209,6 @@ def output():
     classpred = request.args.get('classpred')
     return render_template('output.html', classpred=classpred)
 
+
+if __name__ == "__main__":
+    app.run(debug = True)
