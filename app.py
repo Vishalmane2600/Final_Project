@@ -21,7 +21,7 @@ from keras.models import load_model
 
 from keras.preprocessing.image import load_img , img_to_array
 from pymongo import MongoClient
-import awsgi
+
 # Define a flask app
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
