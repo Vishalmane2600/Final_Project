@@ -42,12 +42,6 @@
         
         
        }
-       .nav-list li:hover{
-        color:red;
-        font-weight:500;
-        
-       }
-
        .nav-links{
         display:flex;
        }
@@ -55,6 +49,7 @@
         display:flex;
         text-decoration:none;
        }
+       
        .header-content{
         display:flex;
         background:linear-gradient(to right, #BDB1C5, #DDD7D0);
@@ -142,9 +137,9 @@
     <ul class="nav-list">
         <div class="nav-links">
         <li><a href="{{url_for('home')}}" style="text-decoration:none">Home</a><li>
-        <li><a href="#" style="text-decoration:none">About</a><li>
+        <li><a href="{{url_for('About')}}" style="text-decoration:none">About</a><li>
         <li><a href="#" style="text-decoration:none">Services</a><li>
-        <li><a href="#" style="text-decoration:none">Contact</a><li>
+        <li><a href="{{url_for('contact')}}" style="text-decoration:none">Contact</a><li>
         </div>
         <div class="nav-btns">
             <li href="#" class="btn-primary" style="text-decoration:none" >Welcome ,</li>

@@ -21,16 +21,18 @@ from keras.models import load_model
 
 from keras.preprocessing.image import load_img , img_to_array
 from pymongo import MongoClient
-
+from pymongo.errors import DuplicateKeyError
 # Define a flask app
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 # Databade COnnection
-MONGO_URI = "mongodb+srv://vishal:pass123@cluster0.wai525o.mongodb.net/?retryWrites=true&w=majority"
+MONGO_URI ="mongodb+srv://vishal:pass123@cluster0.wai525o.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
 client = MongoClient(MONGO_URI)
 db = client.get_database('youtube')
 User = db.users
-
+UserCU = db.contact
+print('MG Database Connected')
 # Model saved with Keras model.save()
 MODEL_PATH = 'model2.h5'
 
@@ -40,7 +42,7 @@ model = load_model(MODEL_PATH)
 print('Model loaded. Start serving...')
 
 
-ALLOWED_EXT = set(['jpg'])
+ALLOWED_EXT = set(['jpg']) 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXT
@@ -48,25 +50,25 @@ def allowed_file(filename):
 classes = ['Actinic keratoses', 'Basal cell carcinoma', 'Benign keratosis-like lesions', 'Dermatofibroma', 'Melanoma', 'Melanocytic nevi', 'Vascular lesions']
 
 def model_predict(img_path, model):
-    img = image.load_img(img_path, target_size=(32, 32))
-    img = image.img_to_array(img)
-    img = img.reshape(1 , 32 ,32 ,3)
+    img = image.load_img(img_path, target_size=(32, 32))  # image size 32,32
+    img = image.img_to_array(img)    # convert image to array
+    img = img.reshape(1 , 32 ,32 ,3)  #reshaping image in 32,32 with  rgb colour
 
     img = img.astype('float32')
-    img = img/255.0
+    img = img/255.0     # Here we convert the Array value into 0 - 1 between;
     preds = model.predict(img)
     dict_result = {}
     for i in range(7):
-        dict_result[preds[0][i]] = classes[i]
+        dict_result[preds[0][i]] = classes[i]  # preds =[0, 0, 0 ,0,100,0] 
 
-    res = preds[0]
-    res.sort()
-    res = res[::-1]
-    prob = res[:3]
+    res = preds[0]  
+    res.sort()       # res = [0,0,0,0,100]
+    res = res[::-1]  #res = [ 100,0,0,0,0]
+    prob = res[:3]   # prob = [100,0,0]
     
     class_result = []
     for i in range(1):
-        class_result.append(dict_result[prob[i]])
+        class_result.append(dict_result[prob[i]])   # here key pass and take predic
     return class_result 
 
 
@@ -84,6 +86,14 @@ def index2():
     # Main page
     return render_template('index2.html')
 
+@app.route('/About', methods=['GET','POST'])
+def About():
+    return render_template('About.html')
+
+
+@app.route('/contact', methods=['GET','POST'])
+def contact():
+    return render_template('contact.html')
 
 @app.route('/upload' , methods = ['GET' , 'POST'])
 def upload():
@@ -203,6 +213,22 @@ def logout():
     session.clear()
     return render_template('html.html')
 
+@app.route('/contactform',methods=['POST'])
+def contactform():
+    if request.method == 'POST': # Check if the request method is GET
+         email = request.form.get('email')
+         message = request.form.get('message')
+         username = request.form.get('username')
+         user_data = {'email':email,'username':username,'message':message}
+         try:
+            UserCU.insert_one(user_data)
+            return redirect('/contact')
+         except DuplicateKeyError as e:
+            print("Duplicate key error:", e)
+            return render_template('contact.html')
+    else:
+        return render_template('contact.html')
+
 
 @app.route('/output', methods=['GET','POSt'])
 def output():
@@ -211,4 +237,4 @@ def output():
 
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run(host= "0.0.0.0")
